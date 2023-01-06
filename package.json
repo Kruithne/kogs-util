@@ -1,0 +1,31 @@
+{
+	"name": "@kogs/utils",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "A collection of standalone utility functions.",
+	"main": "index.js",
+	"scripts": {
+		"test": "node test/test.mjs"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Kruithne/kogs-utils.git"
+	},
+	"keywords": [
+		"utility",
+		"utils"
+	],
+	"author": "Kruithne (kruithne@gmail.com)",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Kruithne/kogs-utils/issues"
+	},
+	"homepage": "https://github.com/Kruithne/kogs-utils#readme",
+	"devDependencies": {
+		"@kogs/test": "^2.1.2",
+		"@types/node": "^18.11.18",
+		"@typescript-eslint/eslint-plugin": "^5.48.0",
+		"@typescript-eslint/parser": "^5.48.0",
+		"eslint": "^8.31.0"
+	}
+}
