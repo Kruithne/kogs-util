@@ -2,4 +2,3 @@ node_modules
 *.js
 *.d.ts
 !*.test.js
-!.eslintrc.js
