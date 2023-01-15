@@ -1,5 +1,6 @@
-test/
 tsconfig.json
 .eslintrc.json
 .gitignore
 *.ts
+*.test.js
+.github

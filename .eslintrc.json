@@ -1,7 +1,8 @@
 {
     "env": {
         "node": true,
-        "es2021": true
+        "es2021": true,
+        "jest/globals": true
     },
     "extends": [
         "eslint:recommended",
@@ -16,7 +17,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "jest"
     ],
     "rules": {
         "@typescript-eslint/no-explicit-any": "error",
