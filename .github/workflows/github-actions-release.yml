@@ -7,6 +7,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     steps:
       - uses: actions/checkout@v3
@@ -31,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           registry-url: 'https://npm.pkg.github.com'
-          scope: 'kruithne'
+          scope: '@kogs'
       - name: Publish to GitHub Packages
         run: npm publish --access=public
         env:
