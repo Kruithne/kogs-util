@@ -81,15 +81,23 @@ export function filterStream(fn: StreamFilter, objectMode: boolean = true): stre
 /**
  * Merges the given streams into a single stream.
  * @param streams - Streams to be merged.
- * @returns A readable stream containing the data emitted by the given streams.
+ * @returns A stream containing the data emitted by the given streams.
  */
-export async function mergeStreams(...streams: Array<stream.Readable>): Promise<stream.Readable> {
-	const output = new stream.PassThrough({ objectMode: true });
+export async function mergeStreams(...streams: Array<stream.Readable>): Promise<stream.PassThrough> {
+	const merged = new stream.PassThrough({ objectMode: true });
 
-	for (const stream of streams)
-		stream.pipe(output, { end: false });
+	let ended = 0;
+	for (const stream of streams) {
+		for await (const data of stream)
+			merged.write(data);
 
-	return output;
+		ended += 1;
+
+		if (ended === streams.length)
+			merged.end();
+	}
+
+	return merged;
 }
 
 export default {
