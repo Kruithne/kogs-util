@@ -7,34 +7,42 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '19.x'
-          registry-url: 'https://registry.npmjs.org'
+      - name: Checkout repository source
+        uses: actions/checkout@v3
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+          with:
+            node-version: '19.x'
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install TypeScript
         run: npm install -g typescript
+
       - name: Compile TypeScript
         run: tsc
+
       - name: Run tests
         run: npm test
+
       - name: ESLint check
         run: npx eslint .
+
       - name: Publish to npmjs.org
-        run: npm publish --access=public
+        run: |
+          npm config set registry https://registry.npmjs.org/
+          npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - uses: actions/setup-node@v3
-        with:
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@kogs'
+
       - name: Publish to GitHub Packages
-        run: npm publish --access=public
+        run: |
+          npm config set registry https://npm.pkg.github.com/kruithne
+          npm config set @kruithne:registry https://npm.pkg.github.com/kruithne
+          npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
