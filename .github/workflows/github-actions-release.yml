@@ -7,6 +7,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     steps:
       - name: Checkout repository source
@@ -14,12 +16,12 @@ jobs:
 
       - name: Setup node.js
         uses: actions/setup-node@v3
-        with:
-          node-version: '19.x'
+          with:
+            node-version: '19.x'
 
       - name: Install dependencies
         run: npm ci
-
+        
       - name: Install TypeScript
         run: npm install -g typescript
 
@@ -33,16 +35,6 @@ jobs:
         run: npx eslint .
 
       - name: Publish to npmjs.org
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm publish --access=public
+        run: npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish to GitHub Packages
-        run: |
-          npm config set registry https://npm.pkg.github.com/kruithne
-          npm config set @kruithne:registry https://npm.pkg.github.com/kruithne
-          npm publish --access=public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
