@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@kogs'
+          scope: 'kruithne'
       - name: Publish to GitHub Packages
         run: npm publish --access=public
         env:
