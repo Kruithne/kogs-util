@@ -4,7 +4,7 @@
 tsconfig.json
 
 # Ignore ESlint configuration.
-.eslintrc.json
+.eslintrc.cjs
 
 # Ignore the git ignore file.
 .gitignore
