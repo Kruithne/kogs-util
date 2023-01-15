@@ -1,3 +1,9 @@
+name: Publish package to npmjs.org and GitHub Packages
+
+on:
+  release:
+    types: [created]
+
 jobs:
   release:
     runs-on: ubuntu-latest
