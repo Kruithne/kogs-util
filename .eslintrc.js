@@ -1,4 +1,4 @@
-{
+module.exports = {
     "env": {
         "node": true,
         "es2021": true,
@@ -29,7 +29,7 @@
         ],
         "linebreak-style": [
             "error",
-            "windows"
+            process.platform === "win32" ? "windows" : "unix"
         ],
         "quotes": [
             "error",
@@ -40,4 +40,4 @@
             "always"
         ]
     }
-}
+};
