@@ -22,9 +22,18 @@ import { someFunction } from '@kogs/utils';
 import utils from '@kogs/utils';
 ```
 
+## Overview
+
+- [`arrayToStream`](#arraytostream) - Convert an array of values to a readable stream.
+- [`streamToArray`](#streamtoarray) - Convert a readable stream to an array of values.
+- [`streamToBuffer`](#streamtobuffer) - Convert a readable stream to a `Buffer`.
+- [`filterStream`](#filterstream) - Create a transform stream that filters stream data.
+- [`mergeStreams`](#mergestreams) - Merge multiple readable streams into a single stream.
+
 ## API
 
-#### → arrayToStream(input: Array<ReadableChunk>, objectMode?: boolean): stream.Readable
+### arrayToStream
+`arrayToStream(input: Array<ReadableChunk>, objectMode: boolean = true): stream.Readable`
 
 ```js
 // Relevant types:
@@ -43,7 +52,8 @@ const stream = arrayToStream(['foo', 'bar', 'baz']);
 // stream.read() ==== 'foo'
 ```
 
-#### → streamToArray(input: stream.Readable): Promise<Array<ReadableChunk>>
+### streamToArray
+`streamToArray(input: stream.Readable): Promise<Array<ReadableChunk>>`
 
 ```js
 // Relevant types:
@@ -61,7 +71,8 @@ const result = await streamToArray(stream);
 // result === ['foo', 'bar', 'baz']
 ```
 
-#### → streamToBuffer(input: stream.Readable): Promise<Buffer>
+### streamToBuffer
+`streamToBuffer(input: stream.Readable): Promise<Buffer>`
 
 This method accepts a readable stream and returns a promise that resolves with a `Buffer` containing the data emitted by the stream.
 
@@ -74,7 +85,8 @@ const result = await streamToBuffer(stream);
 // `result` is a Buffer[9] containing 'foobarbaz'.
 ```
 
-#### → filterStream(fn: StreamFilter, objectMode: boolean = true): stream.Transform
+### filterStream
+`filterStream(fn: StreamFilter, objectMode: boolean = true): stream.Transform`
 
 ```js
 // Relevant types:
@@ -93,7 +105,8 @@ const filtered = stream.pipe(filterStream(chunk => chunk !== 'bar'));
 // `filtered` will emit 'foo' and 'baz'.
 ```
 
-#### → mergeStreams(...streams: Array<stream.Readable>): Promise<stream.PassThrough>
+### mergeStreams
+`mergeStreams(...streams: Array<stream.Readable>): Promise<stream.PassThrough>`
 
 This method accepts a variable number of readable streams and returns a promise that resolves with a `PassThrough` stream that merges the data emitted by the input streams.
 
