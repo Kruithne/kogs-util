@@ -1,3 +1,4 @@
+import { expect, test } from '@jest/globals';
 import streams from 'node:stream';
 import utils from './index.js';
 
