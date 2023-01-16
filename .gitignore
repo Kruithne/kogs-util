@@ -1,3 +1,5 @@
+# This file controls what files are ignored in source control (git).
+
 # Ignore Node.js dependencies directory.
 node_modules
 
