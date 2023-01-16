@@ -24,13 +24,7 @@ import utils from '@kogs/utils';
 
 ## API
 
-- [`arrayToStream` - Convert an array to a readable stream.](#arraytostream)
-- [`streamToArray` - Convert a readable stream to an array.](#streamtoarray)
-- [`streamToBuffer` - Convert a readable stream to a buffer.](#streamtobuffer)
-- [`filterStream` - Create a transform for filtering streams.](#filterstream)
-- [`mergeStreams` - Merge multiple readable streams into a single stream.](#mergestreams)
-
-#### → arrayToStream(input: Array<ReadableChunk>, objectMode?: boolean): stream.Readable {#arraytostream}
+#### → arrayToStream(input: Array<ReadableChunk>, objectMode?: boolean): stream.Readable
 
 ```js
 // Relevant types:
@@ -49,7 +43,7 @@ const stream = arrayToStream(['foo', 'bar', 'baz']);
 // stream.read() ==== 'foo'
 ```
 
-#### → streamToArray(input: stream.Readable): Promise<Array<ReadableChunk>> {#streamtoarray}
+#### → streamToArray(input: stream.Readable): Promise<Array<ReadableChunk>>
 
 ```js
 // Relevant types:
@@ -67,7 +61,7 @@ const result = await streamToArray(stream);
 // result === ['foo', 'bar', 'baz']
 ```
 
-#### → streamToBuffer(input: stream.Readable): Promise<Buffer> {#streamtobuffer}
+#### → streamToBuffer(input: stream.Readable): Promise<Buffer>
 
 This method accepts a readable stream and returns a promise that resolves with a `Buffer` containing the data emitted by the stream.
 
@@ -80,7 +74,7 @@ const result = await streamToBuffer(stream);
 // `result` is a Buffer[9] containing 'foobarbaz'.
 ```
 
-#### → filterStream(fn: StreamFilter, objectMode: boolean = true): stream.Transform {#filterstream}
+#### → filterStream(fn: StreamFilter, objectMode: boolean = true): stream.Transform
 
 ```js
 // Relevant types:
@@ -99,7 +93,7 @@ const filtered = stream.pipe(filterStream(chunk => chunk !== 'bar'));
 // `filtered` will emit 'foo' and 'baz'.
 ```
 
-#### → mergeStreams(...streams: Array<stream.Readable>): Promise<stream.PassThrough> {#mergestreams}
+#### → mergeStreams(...streams: Array<stream.Readable>): Promise<stream.PassThrough>
 
 This method accepts a variable number of readable streams and returns a promise that resolves with a `PassThrough` stream that merges the data emitted by the input streams.
 
