@@ -9,8 +9,9 @@ tsconfig.json
 # Ignore the git ignore file.
 .gitignore
 
-# Ignore TypeScript (source).
+# Ignore TypeScript (except definition files).
 *.ts
+!*.d.ts
 
 # Ignore any unit tests.
 *.test.js
