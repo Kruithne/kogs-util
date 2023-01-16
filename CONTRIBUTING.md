@@ -17,6 +17,6 @@ All contributions are welcome, whether it be a bug report, feature request or a 
 - All issues must be accompanied by relevant information, this may include:
   - A description of the issue (expected/actual behaviour, etc.)
   - The version of Node.js you are using.
-  - The version of `@kogs/utils` you are using.
+  - The package version you are using.
   - Code snippets that reproduce the issue.
   - Error messages and/or stack traces.
