@@ -22,15 +22,13 @@ import { someFunction } from '@kogs/utils';
 import utils from '@kogs/utils';
 ```
 
-## Overview
+## API
 
 - [`arrayToStream`](#arraytostream) - Convert an array of values to a readable stream.
 - [`streamToArray`](#streamtoarray) - Convert a readable stream to an array of values.
 - [`streamToBuffer`](#streamtobuffer) - Convert a readable stream to a `Buffer`.
 - [`filterStream`](#filterstream) - Create a transform stream that filters stream data.
 - [`mergeStreams`](#mergestreams) - Merge multiple readable streams into a single stream.
-
-## API
 
 ### arrayToStream
 `arrayToStream(input: Array<ReadableChunk>, objectMode: boolean = true): stream.Readable`
