@@ -8,6 +8,25 @@ type StreamFilter = (chunk: ReadableChunk) => Promise<boolean>;
 type FileFilter = (entryPath: string) => boolean;
 
 /**
+ * Generates a new error class with the given name.
+ * @param name - Name of the error class.
+ * @returns A new error class with the given name.
+ */
+export function errorClass(name: string): new() => Error {
+	return class extends Error {
+		/**
+		 * Creates a new error instance with the given message and options.
+		 * @param message - Error message.
+		 * @param options - Additional options.
+		 */
+		constructor(message?: string, options?: object) {
+			super(message, options);
+			this.name = name;
+		}
+	};
+}
+
+/**
  * Recursively scans the given directory and returns an array of file paths.
  * @param dir - Directory to be scanned.
  * @param filter - Optional filter function that returns true if the file should be included in the result, and false otherwise.
@@ -133,6 +152,7 @@ export async function mergeStreams(...streams: Array<stream.Readable>): Promise<
 
 export default {
 	collectFiles,
+	errorClass,
 	arrayToStream,
 	streamToArray,
 	streamToBuffer,

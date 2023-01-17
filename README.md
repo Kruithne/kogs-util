@@ -54,6 +54,34 @@ const files = await collectFiles('/path/to/dir', e => e.endsWith('.txt'));
 // files[0] = '/path/to/dir/file1.txt'
 ```
 
+### errorClass
+`errorClass(name: string): new() => Error`
+
+This method accepts a name and returns a new error class that can be used to create new errors.
+
+```js
+const MyCustomError = errorClass('MyCustomError');
+throw new MyCustomError('Something went wrong!');
+
+// error.name === 'MyCustomError'
+// error.message === 'Something went wrong!'
+```
+
+The purpose of this factory is to reduce the amount of boilerplate required to create custom errors.
+
+```js
+// Common boilerplate:
+class MyCustomError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = 'MyCustomError';
+	}
+}
+
+// Equivalent to:
+const MyCustomError = errorClass('MyCustomError');
+```
+
 ### arrayToStream
 `arrayToStream(input: Array<ReadableChunk>, objectMode: boolean = true): stream.Readable`
 

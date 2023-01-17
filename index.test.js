@@ -22,6 +22,19 @@ test('collectFiles functionality with filter', async () => {
 	expect(files).toContain(path.join('test', 'testA', 'foo.txt'));
 });
 
+test('errorClass functionality', () => {
+	const myErrorClass = utils.errorClass('MyErrorClass');
+
+	const cause = { foo: 'bar' };
+	const error = new myErrorClass('foo', { cause });
+
+	expect(error).toBeInstanceOf(Error);
+	expect(error).toBeInstanceOf(myErrorClass);
+	expect(error.name).toBe('MyErrorClass');
+	expect(error.message).toBe('foo');
+	expect(error.cause).toBe(cause);
+});
+
 test('streamToArray functionality', async () => {
 	const input = [1, 2, 3, 4, 5];
 	const stream = new streams.Readable({
