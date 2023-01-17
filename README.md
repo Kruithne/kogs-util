@@ -1,7 +1,7 @@
 # @kogs/utils
 ![tests status](https://github.com/Kruithne/kogs-utils/actions/workflows/github-actions-test.yml/badge.svg) [![license badge](https://img.shields.io/github/license/Kruithne/kogs-utils?color=blue)](LICENSE)
 
-`@kogs/util` is a [Node.js](https://nodejs.org/en/) package that provides a collection of utility functions.
+`@kogs/utils` is a [Node.js](https://nodejs.org/en/) package that provides a collection of utility functions.
 
 - Provides ["pure functions"](https://en.wikipedia.org/wiki/Pure_function).
 - Full [TypeScript](https://www.typescriptlang.org/) definitions.
