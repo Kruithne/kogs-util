@@ -16,6 +16,9 @@ tsconfig.json
 # Ignore any unit tests.
 *.test.js
 
+# Ignore test directory.
+test
+
 # Ignore the GitHub workflow folder.
 .github
 

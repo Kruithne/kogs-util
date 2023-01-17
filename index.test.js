@@ -1,6 +1,26 @@
 import { expect, test } from '@jest/globals';
 import streams from 'node:stream';
 import utils from './index.js';
+import path from 'node:path';
+
+test('collectFiles functionality', async () => {
+	const files = await utils.collectFiles('test');
+
+	expect(files).toHaveLength(4);
+	expect(files).toContain(path.join('test', 'foo.txt'));
+	expect(files).toContain(path.join('test', 'testC', 'bar.log'));
+	expect(files).toContain(path.join('test', 'testC', 'foo.txt'));
+	expect(files).toContain(path.join('test', 'testA', 'foo.txt'));
+});
+
+test('collectFiles functionality with filter', async () => {
+	const files = await utils.collectFiles('test', entry => entry.endsWith('.txt'));
+
+	expect(files).toHaveLength(3);
+	expect(files).toContain(path.join('test', 'foo.txt'));
+	expect(files).toContain(path.join('test', 'testC', 'foo.txt'));
+	expect(files).toContain(path.join('test', 'testA', 'foo.txt'));
+});
 
 test('streamToArray functionality', async () => {
 	const input = [1, 2, 3, 4, 5];

@@ -24,11 +24,35 @@ import utils from '@kogs/utils';
 
 ## API
 
+- [`collectFiles`](#collectfiles) - Collect all files in a directory recursively.
 - [`arrayToStream`](#arraytostream) - Convert an array of values to a readable stream.
 - [`streamToArray`](#streamtoarray) - Convert a readable stream to an array of values.
 - [`streamToBuffer`](#streamtobuffer) - Convert a readable stream to a `Buffer`.
 - [`filterStream`](#filterstream) - Create a transform stream that filters stream data.
 - [`mergeStreams`](#mergestreams) - Merge multiple readable streams into a single stream.
+
+### collectFiles
+`collectFiles(dir: string, filter?: FileFilter): Promise<string[]>`
+
+```js
+// Relevant types:
+type FileFilter = (entryPath: string) => boolean;
+```
+
+This method accepts a directory path and returns a promise that resolves with an array of file paths recursively contained within the directory.
+
+```js
+const files = await collectFiles('/path/to/dir');
+// files[0] = '/path/to/dir/file1.txt'
+// files[1] = '/path/to/dir/file2.log'
+```
+
+If `filter` is defined, it will be used to filter the files returned by the method. The `filter` function will be passed the combined path of the directory and file name, and should return `true` if the file should be included in the result.
+
+```js
+const files = await collectFiles('/path/to/dir', e => e.endsWith('.txt'));
+// files[0] = '/path/to/dir/file1.txt'
+```
 
 ### arrayToStream
 `arrayToStream(input: Array<ReadableChunk>, objectMode: boolean = true): stream.Readable`
