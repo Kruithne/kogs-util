@@ -290,12 +290,12 @@ test('async copy() with options.overwrite=newer', async () => {
 	// Create a new file called test-data.txt
 	fs.writeFileSync('test-data.txt', 'Contents of test-data.txt');
 
-	// Set the mtime of test-data.txt to 1 second in the past.
-	// This ensures that the file is older than test-data-copy.txt.
-	fs.utimesSync('test-data.txt', Date.now() / 1000 - 1, Date.now() / 1000 - 1);
-
 	// Copy the file to test-data-copy.txt.
 	await utils.copy('test-data.txt', 'test-data-copy.txt', { overwrite: 'newer' });
+
+	// Set the mtime of test-data.txt to 10 seconds in the past.
+	// This ensures that the file is older than test-data-copy.txt.
+	fs.utimesSync('test-data.txt', Date.now() / 1000 - 10, Date.now() / 1000 - 10);
 
 	// Check that the file was copied and the contents are correct.
 	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('Contents of test-data.txt');
@@ -327,12 +327,12 @@ test('copySync() with options.overwrite=newer', () => {
 	// Create a new file called test-data.txt
 	fs.writeFileSync('test-data.txt', 'Contents of test-data.txt');
 
-	// Set the mtime of test-data.txt to 1 second in the past.
-	// This ensures that the file is older than test-data-copy.txt.
-	fs.utimesSync('test-data.txt', Date.now() / 1000 - 1, Date.now() / 1000 - 1);
-
 	// Copy the file to test-data-copy.txt.
 	utils.copySync('test-data.txt', 'test-data-copy.txt', { overwrite: 'newer' });
+
+	// Set the mtime of test-data.txt to 10 seconds in the past.
+	// This ensures that the file is older than test-data-copy.txt.
+	fs.utimesSync('test-data.txt', Date.now() / 1000 - 10, Date.now() / 1000 - 10);
 
 	// Check that the file was copied and the contents are correct.
 	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('Contents of test-data.txt');
