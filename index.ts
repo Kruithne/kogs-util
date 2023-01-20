@@ -7,19 +7,52 @@ type StreamFilter = (chunk: ReadableChunk) => Promise<boolean>;
 
 type FileFilter = (entryPath: string) => boolean;
 
+type CopyOptions = {
+	overwrite?: 'always' | 'never' | 'newer' | true | false;
+};
+
 /**
  * Recursively copies the given source file or directory to the given destination.
  * @param src - Source file or directory.
  * @param dest - Destination file or directory.
+ * @param options - Additional options.
  */
-export async function copy(src: string, dest: string): Promise<void> {
-	const stat = await fs.promises.stat(src);
-	if (stat.isFile()) {
-		await fs.promises.copyFile(src, dest);
-	} else if (stat.isDirectory()) {
-		await fs.promises.mkdir(dest, { recursive: true });
-		const files = await fs.promises.readdir(src);
+export async function copy(src: string, dest: string, options?: CopyOptions): Promise<void> {
+	const srcStat: fs.Stats = await fs.promises.stat(src);
+	const destStat: fs.Stats | null = await fs.promises.stat(dest).catch(() => null);
 
+	let overwrite = options?.overwrite === 'always' || options?.overwrite === true;
+	if (options?.overwrite === 'newer') {
+		if (srcStat.mtimeMs > destStat?.mtimeMs)
+			overwrite = true;
+	}
+
+	if (srcStat.isFile()) {
+		// If source is a file but a directory exists at the destintation, we recursively
+		// delete it if `overwrite` is true, otherwise leave it and return.
+		if (destStat) {
+			if (overwrite) {
+				if (destStat?.isDirectory())
+					await fs.promises.rm(dest, { recursive: true });
+			} else {
+				return;
+			}
+		}
+
+		await fs.promises.copyFile(src, dest);
+	} else if (srcStat.isDirectory()) {
+		// If source is a directory but a file exists at the destintation, we delete
+		// it if `overwrite` is true, otherwise leave it and return.
+		if (destStat?.isFile()) {
+			if (overwrite)
+				await fs.promises.unlink(dest);
+			else
+				return;
+		}
+
+		await fs.promises.mkdir(dest, { recursive: true });
+
+		const files = await fs.promises.readdir(src);
 		for (const file of files)
 			await copy(path.join(src, file), path.join(dest, file));
 	}
@@ -29,15 +62,44 @@ export async function copy(src: string, dest: string): Promise<void> {
  * Recursively copies the given source file or directory to the given destination.
  * @param src - Source file or directory.
  * @param dest - Destination file or directory.
+ * @param options - Additional options.
  */
-export function copySync(src: string, dest: string): void {
-	const stat = fs.statSync(src);
-	if (stat.isFile()) {
-		fs.copyFileSync(src, dest);
-	} else if (stat.isDirectory()) {
-		fs.mkdirSync(dest, { recursive: true });
-		const files = fs.readdirSync(src);
+export function copySync(src: string, dest: string, options?: CopyOptions): void {
+	const srcStat: fs.Stats = fs.statSync(src);
+	const destStat: fs.Stats | undefined = fs.statSync(dest, { throwIfNoEntry: false });
 
+	let overwrite = options?.overwrite === 'always' || options?.overwrite === true;
+	if (options?.overwrite === 'newer') {
+		if (srcStat.mtimeMs > destStat?.mtimeMs)
+			overwrite = true;
+	}
+
+	if (srcStat.isFile()) {
+		// If source is a file but a directory exists at the destintation, we recursively
+		// delete it if `overwrite` is true, otherwise leave it and return.
+		if (destStat) {
+			if (overwrite) {
+				if (destStat?.isDirectory())
+					fs.rmSync(dest, { recursive: true });
+			} else {
+				return;
+			}
+		}
+
+		fs.copyFileSync(src, dest);
+	} else if (srcStat.isDirectory()) {
+		// If source is a directory but a file exists at the destintation, we delete
+		// it if `overwrite` is true, otherwise leave it and return.
+		if (destStat?.isFile()) {
+			if (overwrite)
+				fs.unlinkSync(dest);
+			else
+				return;
+		}
+
+		fs.mkdirSync(dest, { recursive: true });
+
+		const files = fs.readdirSync(src);
 		for (const file of files)
 			copySync(path.join(src, file), path.join(dest, file));
 	}

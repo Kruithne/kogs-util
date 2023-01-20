@@ -38,11 +38,24 @@ import utils from '@kogs/utils';
 
 This method accepts a source path and a destination path and returns a promise that resolves when the copy operation has completed.
 
-If given a directory, the directory and all of its contents will be copied recursively.
+- If given a directory, the directory and all of its contents will be copied recursively to the new location.
+- If given a directory, but a file exists at the destination, the file will be unlinked and replaced with the directory.
+- If given a file, but a directory exists at the destination, the directory will be recursively deleted and replaced with the file.
 
 ```js
 await copy('/path/to/src', '/path/to/dest');
 ```
+
+The default behavior of overwriting can be controlled by passing an options object as the third argument with the `overwrite` property set to `true`, `false`, `always`, `never` or `newer`.
+
+- `true` or `always` - Overwrite the destination if it already exists.
+- `false` or `never` - Do not overwrite the destination if it already exists.
+- `newer` - Only overwrite the destination tgat already exists if the source is newer.
+
+```js
+await copy('/path/to/src', '/path/to/dest', { overwrite: 'newer' });
+```
+
 
 ### copySync
 `copySync(src: string, dest: string): void`
@@ -51,8 +64,22 @@ This method accepts a source path and a destination path and returns when the co
 
 If given a directory, the directory and all of its contents will be copied recursively.
 
+- If given a directory, the directory and all of its contents will be copied recursively to the new location.
+- If given a directory, but a file exists at the destination, the file will be unlinked and replaced with the directory.
+- If given a file, but a directory exists at the destination, the directory will be recursively deleted and replaced with the file.
+
 ```js
 copySync('/path/to/src', '/path/to/dest');
+```
+
+The default behavior of overwriting can be controlled by passing an options object as the third argument with the `overwrite` property set to `true`, `false`, `always`, `never` or `newer`.
+
+- `true` or `always` - Overwrite the destination if it already exists.
+- `false` or `never` - Do not overwrite the destination if it already exists.
+- `newer` - Only overwrite the destination tgat already exists if the source is newer.
+
+```js
+copySync('/path/to/src', '/path/to/dest', { overwrite: 'newer' });
 ```
 
 ### collectFiles
