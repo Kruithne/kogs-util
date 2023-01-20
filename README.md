@@ -24,12 +24,36 @@ import utils from '@kogs/utils';
 
 ## API
 
+- [`copy`](#copy) - Copy a file or directory recursively.
+- [`copySync`](#copysync) - Synchronous version of `copy`.
 - [`collectFiles`](#collectfiles) - Collect all files in a directory recursively.
 - [`arrayToStream`](#arraytostream) - Convert an array of values to a readable stream.
 - [`streamToArray`](#streamtoarray) - Convert a readable stream to an array of values.
 - [`streamToBuffer`](#streamtobuffer) - Convert a readable stream to a `Buffer`.
 - [`filterStream`](#filterstream) - Create a transform stream that filters stream data.
 - [`mergeStreams`](#mergestreams) - Merge multiple readable streams into a single stream.
+
+### copy
+`copy(src: string, dest: string): Promise<void>`
+
+This method accepts a source path and a destination path and returns a promise that resolves when the copy operation has completed.
+
+If given a directory, the directory and all of its contents will be copied recursively.
+
+```js
+await copy('/path/to/src', '/path/to/dest');
+```
+
+### copySync
+`copySync(src: string, dest: string): void`
+
+This method accepts a source path and a destination path and returns when the copy operation has completed.
+
+If given a directory, the directory and all of its contents will be copied recursively.
+
+```js
+copySync('/path/to/src', '/path/to/dest');
+```
 
 ### collectFiles
 `collectFiles(dir: string, filter?: FileFilter): Promise<string[]>`

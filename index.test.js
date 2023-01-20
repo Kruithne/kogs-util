@@ -2,6 +2,7 @@ import { expect, test } from '@jest/globals';
 import streams from 'node:stream';
 import utils from './index.js';
 import path from 'node:path';
+import fs from 'node:fs';
 
 test('collectFiles functionality', async () => {
 	const files = await utils.collectFiles('test');
@@ -116,4 +117,70 @@ test('filterStream() functionality', async () => {
 
 	const filteredContents = await utils.streamToArray(filtered);
 	expect(filteredContents).toStrictEqual(['a']);
+});
+
+test('async copy() directory functionality', async () => {
+	// Copy an entire directory.
+	await utils.copy('test', 'test-copy');
+
+	// Check that the directory was copied.
+	const files = await utils.collectFiles('test-copy');
+	expect(files).toHaveLength(4);
+	expect(files).toContain(path.join('test-copy', 'foo.txt'));
+	expect(files).toContain(path.join('test-copy', 'testC', 'bar.log'));
+	expect(files).toContain(path.join('test-copy', 'testC', 'foo.txt'));
+	expect(files).toContain(path.join('test-copy', 'testA', 'foo.txt'));
+
+	// Check that the contents of the files were copied.
+	expect(fs.readFileSync(path.join('test-copy', 'foo.txt'), 'utf8')).toBe('Contents of foo.txt');
+	expect(fs.readFileSync(path.join('test-copy', 'testC', 'bar.log'), 'utf8')).toBe('Contents of bar.log');
+	expect(fs.readFileSync(path.join('test-copy', 'testC', 'foo.txt'), 'utf8')).toBe('Contents of foo.txt');
+	expect(fs.readFileSync(path.join('test-copy', 'testA', 'foo.txt'), 'utf8')).toBe('Contents of foo.txt');
+
+	// Delete the copied directory.
+	await fs.promises.rmdir('test-copy', { recursive: true });
+});
+
+test('async copy() single file functionality', async () => {
+	// Copy a single file.
+	await utils.copy('test/foo.txt', 'test-copy.txt');
+
+	// Check that the file was copied.
+	expect(fs.readFileSync('test-copy.txt', 'utf8')).toBe('Contents of foo.txt');
+
+	// Delete the copied file.
+	await fs.promises.unlink('test-copy.txt');
+});
+
+test('copySync() directory functionality', async () => {
+	// Copy an entire directory.
+	utils.copySync('test', 'test-copy');
+
+	// Check that the directory was copied.
+	const files = await utils.collectFiles('test-copy');
+	expect(files).toHaveLength(4);
+	expect(files).toContain(path.join('test-copy', 'foo.txt'));
+	expect(files).toContain(path.join('test-copy', 'testC', 'bar.log'));
+	expect(files).toContain(path.join('test-copy', 'testC', 'foo.txt'));
+	expect(files).toContain(path.join('test-copy', 'testA', 'foo.txt'));
+
+	// Check that the contents of the files were copied.
+	expect(fs.readFileSync(path.join('test-copy', 'foo.txt'), 'utf8')).toBe('Contents of foo.txt');
+	expect(fs.readFileSync(path.join('test-copy', 'testC', 'bar.log'), 'utf8')).toBe('Contents of bar.log');
+	expect(fs.readFileSync(path.join('test-copy', 'testC', 'foo.txt'), 'utf8')).toBe('Contents of foo.txt');
+	expect(fs.readFileSync(path.join('test-copy', 'testA', 'foo.txt'), 'utf8')).toBe('Contents of foo.txt');
+
+	// Delete the copied directory.
+	fs.rmdirSync('test-copy', { recursive: true });
+});
+
+test('copySync() single file functionality', () => {
+	// Copy a single file.
+	utils.copySync('test/foo.txt', 'test-copy.txt');
+
+	// Check that the file was copied.
+	expect(fs.readFileSync('test-copy.txt', 'utf8')).toBe('Contents of foo.txt');
+
+	// Delete the copied file.
+	fs.unlinkSync('test-copy.txt');
 });

@@ -8,6 +8,42 @@ type StreamFilter = (chunk: ReadableChunk) => Promise<boolean>;
 type FileFilter = (entryPath: string) => boolean;
 
 /**
+ * Recursively copies the given source file or directory to the given destination.
+ * @param src - Source file or directory.
+ * @param dest - Destination file or directory.
+ */
+export async function copy(src: string, dest: string): Promise<void> {
+	const stat = await fs.promises.stat(src);
+	if (stat.isFile()) {
+		await fs.promises.copyFile(src, dest);
+	} else if (stat.isDirectory()) {
+		await fs.promises.mkdir(dest, { recursive: true });
+		const files = await fs.promises.readdir(src);
+
+		for (const file of files)
+			await copy(path.join(src, file), path.join(dest, file));
+	}
+}
+
+/**
+ * Recursively copies the given source file or directory to the given destination.
+ * @param src - Source file or directory.
+ * @param dest - Destination file or directory.
+ */
+export function copySync(src: string, dest: string): void {
+	const stat = fs.statSync(src);
+	if (stat.isFile()) {
+		fs.copyFileSync(src, dest);
+	} else if (stat.isDirectory()) {
+		fs.mkdirSync(dest, { recursive: true });
+		const files = fs.readdirSync(src);
+
+		for (const file of files)
+			copySync(path.join(src, file), path.join(dest, file));
+	}
+}
+
+/**
  * Generates a new error class with the given name.
  * @param name - Name of the error class.
  * @returns A new error class with the given name.
@@ -151,6 +187,8 @@ export async function mergeStreams(...streams: Array<stream.Readable>): Promise<
 }
 
 export default {
+	copy,
+	copySync,
 	collectFiles,
 	errorClass,
 	arrayToStream,
