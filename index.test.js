@@ -309,14 +309,14 @@ test('async copy() with options.overwrite=newer', async () => {
 	// Check that the file was not overwritten.
 	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('New contents of test-data-copy.txt');
 
-	// Update the contents of test-data.txt
-	fs.writeFileSync('test-data.txt', 'Updated contents of test-data.txt');
+	// Set the mtime of test-data.txt to 10 seconds in the future.
+	fs.utimesSync('test-data.txt', Date.now() / 1000 + 10, Date.now() / 1000 + 10);
 
 	// Attempt to copy test-data.txt to test-data-copy.txt.
 	await utils.copy('test-data.txt', 'test-data-copy.txt', { overwrite: 'newer' });
 
 	// Check that the file was overwritten.
-	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('Updated contents of test-data.txt');
+	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('Contents of test-data.txt');
 
 	// Delete both files.
 	await fs.promises.unlink('test-data.txt');
@@ -346,14 +346,14 @@ test('copySync() with options.overwrite=newer', () => {
 	// Check that the file was not overwritten.
 	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('New contents of test-data-copy.txt');
 
-	// Update the contents of test-data.txt
-	fs.writeFileSync('test-data.txt', 'Updated contents of test-data.txt');
+	// Set the mtime of test-data.txt to 10 seconds in the future
+	fs.utimesSync('test-data.txt', Date.now() / 1000 + 10, Date.now() / 1000 + 10);
 
 	// Attempt to copy test-data.txt to test-data-copy.txt.
 	utils.copySync('test-data.txt', 'test-data-copy.txt', { overwrite: 'newer' });
 
 	// Check that the file was overwritten.
-	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('Updated contents of test-data.txt');
+	expect(fs.readFileSync('test-data-copy.txt', 'utf8')).toBe('Contents of test-data.txt');
 
 	// Delete both files.
 	fs.unlinkSync('test-data.txt');
