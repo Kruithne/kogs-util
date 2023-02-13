@@ -1,5 +1,4 @@
-# @kogs/utils
-![tests status](https://github.com/Kruithne/kogs-utils/actions/workflows/github-actions-test.yml/badge.svg) [![license badge](https://img.shields.io/github/license/Kruithne/kogs-utils?color=blue)](LICENSE)
+# @kogs/utils &middot; ![tests status](https://github.com/Kruithne/kogs-utils/actions/workflows/github-actions-test.yml/badge.svg) ![typescript](https://img.shields.io/badge/language-typescript-blue) [![license badge](https://img.shields.io/github/license/Kruithne/kogs-utils?color=blue)](LICENSE) ![npm version](https://img.shields.io/npm/v/@kogs/utils?color=blue)
 
 `@kogs/utils` is a [Node.js](https://nodejs.org/en/) package that provides a collection of utility functions.
 
