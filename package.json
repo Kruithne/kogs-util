@@ -1,6 +1,6 @@
 {
 	"name": "@kogs/utils",
-	"version": "1.4.9",
+	"version": "1.4.10",
 	"type": "module",
 	"description": "A collection of standalone utility functions.",
 	"main": "index.js",
