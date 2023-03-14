@@ -232,7 +232,7 @@ const merged = await mergeStreams(stream1, stream2);
 - Avoid feature creep.
 - ES6+ syntax.
 
-All of the packages in the `@kogs` collection can be found [on npm under the `@kogs` scope.](https://www.npmjs.com/settings/kogs/packages)
+All of the packages in the `@kogs` collection can be found [on npm under the `@kogs` scope.](https://www.npmjs.com/org/kogs)
 
 ## Contributing / Feedback / Issues
 Feedback, bug reports and contributions are welcome. Please use the [GitHub issue tracker](https://github.com/Kruithne/kogs-utils/issues) and follow the guidelines found in the [CONTRIBUTING](CONTRIBUTING.md) file.
